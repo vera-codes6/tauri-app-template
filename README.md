@@ -1,88 +1,57 @@
 # Tauri App Template
 
-This is a template for building desktop applications with Tauri.
+Template for building a desktop app with Tauri v2, Vite, and TypeScript (vanilla-ts).
 
-## Requirements
+## Prerequisites
 
-* Read the [Tauri setup guide][tauri-docs]
-* Latest version of [Node][nodejs]
-* [Bun][bun] package manager (alternatively, [npm][npm])
+- Rust toolchain and platform prerequisites for Tauri v2. See Tauri docs: https://tauri.app/v2/guides/getting-started/prerequisites
+- Node.js 22+ (see `engines` in `package.json`)
+- Bun package manager: https://bun.sh
 
-## Get Started
+On first run, Rust will compile dependencies which can take a few minutes. Subsequent runs are much faster.
 
-Create a new project using this template
+## Monorepo layout
 
-Click the **[Use this template][generate]** button.
+- `packages/src-tauri` — Tauri (Rust) app
+- `packages/src-renderer` — Web renderer built with Vite + TypeScript
 
-## Features
+## Install
 
-### Tauri
-- This template uses the latest versions of [Tauri][tauri] features.
-- Build smaller, faster, and more secure desktop applications with a web frontend
+Run at the repository root:
 
-### Vite
-- [Vite][vite] is used to group all the source code of the renderer.
-- Work easily with Vue, Svelte, React, etc.
-
-### Typescript (optional)
-- The Latest [TypeScript][typescript] is used for all source code.
-- **Vite** supports TypeScript out of the box. However, it does not support type checking.
-
-**Note**: If you do not need a TypeScript, you can easily abandon it. To do this, You do not need to make any bundler configuration changes, etc. Just replace all `.ts` files with `.js` files. Additionally, it will be useful to delete TS-specific files, plug-ins and dependencies like `tsconfig.json`, `@typescript-eslint/*`, etc.
-
-### Web frameworks
-
-By default this template is configured with vanilla-ts.
-
-See [examples of different frameworks.][vite-templates]
-
-## How it works
-
-The template required a minimum dependencies. Only Tauri and Vite is used for building, nothing more.
-
-### Project Structure
-
-The structure of this template is very similar to the structure of a monorepo.
-
-- [`packages/src-tauri`][src-tauri] Tauri application source.
-- [`packages/src-renderer`][src-renderer] Web application source.
-
-### Start Development
-
-```bash
-bun dev
+```sh
+bun install
 ```
 
-The first time you run this command, it will take several minutes for the Rust package manager to download and build all the required packages. Since they are cached, subsequent builds will be much faster, as only your code will need rebuilding.
+## Scripts
 
-Once Rust has finished building, the webview will open and it should display your web app.
+- Start app in development with live reload
+	- `bun run dev`
+- Build production bundles (app binary + installer)
+	- `bun run build`
+- Work on the renderer only
+	- `bun run dev:renderer`
+	- `bun run build:renderer`
+- Lint renderer TypeScript
+	- `bun run lint`
+- Generate platform icons (place `packages/src-tauri/app-icon.png` first)
+	- `bun run icons`
 
-### App Publishing
+Notes
+- Dev server runs at http://localhost:8080 and is orchestrated via Tauri (`beforeDevCommand` in `packages/src-tauri/tauri.conf.json`).
+- Build artifacts are under `packages/src-tauri/target/release/` and installers under `packages/src-tauri/target/release/bundle/`.
 
-```bash
-bun build
-```
+## Customize
 
-This command will embed your web assets into a single binary with your Rust code. The binary itself will be located in `packages/src-tauri/target/release/[app name]`, and installers will be located in `packages/src-tauri/target/release/bundle/`.
+- The renderer is plain TypeScript. Swap to React/Vue/Svelte by replacing `packages/src-renderer` with your preferred Vite template and adjusting deps.
+- If you remove TypeScript, replace `.ts` files with `.js` and drop TS-specific config (e.g., `tsconfig.json`, eslint TS plugins).
 
-Like the `bun dev` command, the first time you run this, it will take some time to collect the Rust crates and build everything - but on subsequent runs it will only need to rebuild your code, which is much quicker.
+## Useful links
+
+- Tauri: https://github.com/tauri-apps/tauri
+- Vite: https://vitejs.dev
+- TypeScript: https://www.typescriptlang.org
 
 ## License
 
-This project is licensed under the MIT License - see [LICENSE][license] for more information.
-
-Copyright (c) 2021-present, Valmisson Grizorte.
-
-
-[tauri]: https://github.com/tauri-apps/tauri
-[tauri-docs]: https://tauri.studio/en/docs/getting-started/intro/#setting-up-your-environment
-[vite]: https://github.com/vitejs/vite
-[vite-templates]: https://github.com/vitejs/vite/tree/main/packages/create-vite
-[typescript]: https://github.com/microsoft/TypeScript
-[nodejs]: https://nodejs.org/
-[bun]: https://bun.com/
-[npm]: https://www.npmjs.com/
-[license]: https://github.com/valmisson/tauri-app-template/blob/main/LICENSE
-[src-tauri]: https://github.com/valmisson/tauri-app-template/tree/main/packages/src-tauri
-[src-renderer]: https://github.com/valmisson/tauri-app-template/tree/main/packages/src-renderer
-[generate]: https://github.com/valmisson/tauri-app-template/generate
+MIT — see [LICENSE](./LICENSE).
